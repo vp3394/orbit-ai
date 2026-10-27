@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ORBIT AI | Emerald Galaxy</title>
+<style>
+:root{--green:#53ff9a;--bg:#030906;--panel:#0a1911;--line:#24583a;--muted:#a3c6ae}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#10321f,#030906 65%);color:#effff3;font-family:Segoe UI,Arial,sans-serif}
+header{padding:18px 5%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);background:#030906e8;position:sticky;top:0;z-index:5}
+.logo{font-weight:900;font-size:24px;letter-spacing:3px}.logo span{color:var(--green)}
+button,a{font:inherit;color:#effff3;background:#10291b;border:1px solid #34734c;border-radius:10px;padding:11px 15px;cursor:pointer;text-decoration:none}
+button:hover,a:hover{border-color:var(--green);box-shadow:0 0 15px #53ff9a30}
+.primary{background:var(--green);color:#031109;font-weight:800;border-color:var(--green)}
+main{max-width:1150px;margin:auto;padding:25px 18px 60px}
+.hero{border:1px solid var(--line);border-radius:22px;min-height:330px;padding:35px;display:flex;align-items:center;background:linear-gradient(90deg,#031109f5,#031109b8,#03110925),url('https://images-assets.nasa.gov/image/PIA12348/PIA12348~orig.jpg') center/cover;overflow:hidden}
+.hero div{max-width:570px}.tag{color:var(--green);letter-spacing:3px;font-size:12px;font-weight:bold}
+h1{font-size:clamp(38px,7vw,72px);line-height:.98;margin:14px 0}
+h1 span{color:var(--green)}p{line-height:1.6;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 30px}
+.stat,.panel,.card{background:#0a1911eF;border:1px solid var(--line);border-radius:16px;padding:17px}
+.stat small{color:var(--muted)}.stat strong{display:block;font-size:24px;color:var(--green);margin-top:8px}
+h2{font-size:27px;margin:35px 0 8px}.sub{margin-top:0}
+.layout{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+#space{height:290px;position:relative;overflow:hidden;border-radius:13px;border:1px solid #24583a;background:radial-gradient(ellipse at 50% 120%,#1b7540,#06130c 65%);margin:12px 0}
+.star{position:absolute;background:white;border-radius:50%;width:2px;height:2px;opacity:.7}
+#ship{position:absolute;font-size:35px;left:50%;top:70%;transform:translate(-50%,-50%);filter:drop-shadow(0 0 12px var(--green));transition:left .12s,top .12s}
+#target{position:absolute;font-size:28px;left:70%;top:25%;filter:drop-shadow(0 0 12px #53ff9a)}
+.controls{display:grid;grid-template-columns:repeat(3,48px);justify-content:center;gap:6px}
+.controls button{padding:10px 0}.controls button:nth-child(1){grid-column:2}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.planet{padding:12px 3px;text-align:center;cursor:pointer;border:1px solid var(--line);border-radius:12px;background:#07150d}
+.orb{width:43px;height:43px;border-radius:50%;margin:0 auto 9px;box-shadow:inset -9px -6px 12px #0009,0 0 14px #53ff9a18}
+.planet b{font-size:12px}
+#planetInfo{min-height:65px}
+.missions{display:grid;gap:9px}
+.mission{display:flex;align-items:center;gap:12px;border:1px solid var(--line);padding:12px;border-radius:12px}
+.mission span{flex:1}.mission small{display:block;color:var(--muted);margin-top:4px}
+.lock{opacity:.65}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.gallery img{width:100%;height:155px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.gallery a{padding:0;background:transparent;border:0}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:750px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.hero{padding:23px;min-height:360px}.gallery{grid-template-columns:1fr}.gallery img{height:200px}}
+</style>
+</head>
+<body>
+<header><div class="logo">✦ ORBIT <span>AI</span></div><a href="#missions">MISSIONS ↗</a></header>
+<main>
+<section class="hero">
+<div><div class="tag">EMERALD GALAXY // EXPLORER SYSTEM</div>
+<h1>YOUR GALAXY.<br><span>YOUR RULES.</span></h1>
+<p>Explore distant worlds, pilot your spacecraft, complete missions and rise through the cosmic ranks.</p>
+<a class="primary" href="#game">▶ LAUNCH EXPLORATION</a></div>
+</section>
+<section class="stats">
+<div class="stat"><small>EXPLORER LEVEL</small><strong id="level">01</strong></div>
+<div class="stat"><small>EXPERIENCE</small><strong id="xp">0 XP</strong></div>
+<div class="stat"><small>MISSIONS DONE</small><strong id="done">0 / 4</strong></div>
+<div class="stat"><small>BADGES</small><strong id="badges">0 / 4</strong></div>
+</section>
+
+<h2 id="game">🚀 Open Space Exploration</h2>
+<p class="sub">Move your ship using the buttons or arrow keys. Find the green beacon to earn exploration XP!</p>
+<div class="layout">
+<section class="panel">
+<div id="space"><div id="ship">🚀</div><div id="target">✦</div></div>
+<div class="controls">
+<button onclick="move(0,-7)">▲</button>
+<button onclick="move(-7,0)">◀</button>
+<button onclick="move(0,7)">▼</button>
+<button onclick="move(7,0)">▶</button>
+</div>
+<p id="flightStatus">Systems online. Ready for launch, cadet.</p>
+<button class="primary" onclick="launch()">Launch next mission +100 XP</button>
+</section>
+<section class="panel" id="missions">
+<h3>MISSION BOARD</h3><p>Complete objectives to earn experience.</p>
+<div class="missions" id="missionList"></div>
+<h3>🏆 Achievement Log</h3><div id="achievementList"></div>
+</section>
+</div>
+
+<h2>🪐 Solar System Explorer</h2>
+<p class="sub">Select a world to discover it and log it in your explorer journal.</p>
+<section class="panel">
+<div class="grid" id="planets"></div>
+<p id="planetInfo">Choose a planet to begin your discovery.</p>
+<button class="primary" onclick="discover()">Log discovery +50 XP</button>
+</section>
+
+<h2>🧠 Cosmic Knowledge Challenge</h2>
+<section class="panel">
+<p id="question"></p><div id="answers" class="missions"></div><p id="quizFeedback"></p>
+<button id="next" onclick="nextQuestion()" disabled>Next question →</button>
+</section>
+
+<h2>📸 Real Space Gallery</h2>
+<p class="sub">NASA image library links. Internet connection is required.</p>
+<section class="gallery">
+<a href="https://images.nasa.gov/" target="_blank"><img loading="lazy" src="https://images-assets.nasa.gov/image/PIA00342/PIA00342~orig.jpg" alt="Mars"><p>Mars ↗</p></a>
+<a href="https://images.nasa.gov/" target="_blank"><img loading="lazy" src="https://images-assets.nasa.gov/image/iss068e005600/iss068e005600~orig.jpg" alt="International Space Station"><p>Earth orbit ↗</p></a>
+<a href="https://images.nasa.gov/" target="_blank"><img loading="lazy" src="https://images-assets.nasa.gov/image/PIA16884/PIA16884~orig.jpg" alt="Nebula"><p>Deep space ↗</p></a>
+</section>
+<footer>ORBIT AI · EMERALD GALAXY<br>Educational browser game. Not affiliated with NASA.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let xp=0,completed=[],discovered=[],quizDone=[],mission=0,planet=-1,qIndex=0,answered=false;
+try{let s=JSON.parse(localStorage.getItem('emeraldSave'));if(s){xp=s.xp||0;completed=s.completed||[];discovered=s.discovered||[];quizDone=s.quizDone||[]}}catch(e){}
+const tasks=[
+["First Launch","Launch your explorer ship",100],
+["Red Planet","Complete your Mars survey",150],
+["Orbital Outpost","Reach the orbital station",200],
+["Deep Space","Explore the outer galaxy",300]
+];
+const worlds=[
+["Mercury","#a7a39a","Closest planet to the Sun. Its surface is covered with impact craters."],
+["Venus","#e4a75b","Venus is the hottest planet because of its thick greenhouse atmosphere."],
+["Earth","#2188d6","Our home world has liquid-water oceans and is the only known world with life."],
+["Mars","#d35c38","Iron-rich dust makes Mars appear red. It has the giant volcano Olympus Mons."],
+["Jupiter","#c99d73","Jupiter is the largest planet and has a giant storm called the Great Red Spot."],
+["Saturn","#e0cc91","Saturn's rings contain countless pieces of ice and rock."],
+["Uranus","#85d5d6","This ice giant rotates on its side, giving it unusual seasons."],
+["Neptune","#3868db","Neptune is a distant ice giant with extremely fast winds."]
+];
+function save(){localStorage.setItem('emeraldSave',JSON.stringify({xp,completed,discovered,quizDone}));stats();achievements()}
+function stats(){$('xp').textContent=xp+' XP';$('level').textContent=String(1+Math.floor(xp/250)).padStart(2,'0');$('done').textContent=completed.length+' / 4';$('badges').textContent=achievementsData().filter(a=>a[2]).length+' / 4'}
+function achievementsData(){return [['🚀','First launch',completed.length>=1],['🪐','Planet finder',discovered.length>=1],['🧠','Space scholar',quizDone.length>=3],['🌟','Mission master',completed.length>=4]]}
+function achievements(){$('achievementList').innerHTML=achievementsData().map(a=>`<p class="${a[2]?'':'lock'}">${a[0]} ${a[2]?'✓':'🔒'} ${a[1]}</p>`).join('')}
+function missionBoard(){$('missionList').innerHTML=tasks.map((t,i)=>`<div class="mission"><span>${completed.includes(i)?'✅':'🎯'} ${t[0]}<small>${t[1]} · ${t[2]} XP</small></span><button ${completed.includes(i)?'disabled':''} onclick="doMission(${i})">${completed.includes(i)?'Done':'Start'}</button></div>`).join('')}
+function doMission(i){if(completed.includes(i))return;completed.push(i);xp+=tasks[i][2];mission=i;save();missionBoard();$('flightStatus').textContent='Mission complete: '+tasks[i][0]+'! +' +tasks[i][2]+' XP';$('target').textContent='✓'}
+function launch(){let i=tasks.findIndex((t,i)=>!completed.includes(i));if(i<0){$('flightStatus').textContent='All missions completed! You are a galaxy legend.';return}doMission(i)}
+let px=50,py=70;function move(dx,dy){px=Math.max(5,Math.min(95,px+dx));py=Math.max(8,Math.min(90,py+dy));$('ship').style.left=px+'%';$('ship').style.top=py+'%';if(Math.abs(px-70)<8&&Math.abs(py-25)<10){$('target').textContent='✓';$('flightStatus').textContent='Beacon reached! +25 exploration XP';if(!window.beacon){xp+=25;window.beacon=true;save()}}}
+document.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();move(e.key==='ArrowLeft'?-5:e.key==='ArrowRight'?5:0,e.key==='ArrowUp'?-5:e.key==='ArrowDown'?5:0)}});
+function renderPlanets(){$('planets').innerHTML=worlds.map((w,i)=>`<button class="planet" onclick="selectPlanet(${i})"><div class="orb" style="background:${w[1]}"></div><b>${w[0]}</b></button>`).join('')}
+function selectPlanet(i){planet=i;$('planetInfo').innerHTML='<b style="color:var(--green)">'+worlds[i][0]+'</b> — '+worlds[i][2]}
+function discover(){if(planet<0){$('planetInfo').textContent='Choose a planet first!';return}if(discovered.includes(planet)){$('planetInfo').textContent=worlds[planet][0]+' is already in your journal. Choose another planet.';return}discovered.push(planet);xp+=50;$('planetInfo').textContent='Discovery logged: '+worlds[planet][0]+'! +50 XP';save()}
+const qs=[
+['Which planet has the most famous rings?',['Mars','Saturn','Mercury'],1,'Saturn has a spectacular ring system.'],
+['What is the name of our galaxy?',['Milky Way','Andromeda','Whirlpool'],0,'Our Solar System is inside the Milky Way.'],
+['Which star is closest to Earth?',['Sirius','The Sun','Polaris'],1,'The Sun is our nearest star.'],
+['What does ISS stand for?',['International Space Station','Interstellar Science Ship','Inner Solar System'],0,'The ISS is a laboratory orbiting Earth.'],
+['Which planet is called the Red Planet?',['Mars','Neptune','Jupiter'],0,'Iron-rich dust gives Mars its reddish colour.']
+];
+function showQuestion() {answered=false;let q=qs[qIndex];$('question').textContent=`QUESTION ${qIndex+1}/${qs.length}: ${q[0]}`;$('answers').innerHTML=q[1].map((a,i)=>`<button onclick="answer(${i})">${a}</button>`).join('');$('quizFeedback').textContent='';$('next').disabled=true}
+function answer(i){if(answered)return;answered=true;let q=qs[qIndex];if(i===q[2]){ $('quizFeedback').textContent='Correct! +50 XP. '+q[3];if(!quizDone.includes(qIndex)){quizDone.push(qIndex);xp+=50;save()}}else $('quizFeedback').textContent='Not quite. '+q[3];$('next').disabled=false}
+function nextQuestion(){qIndex=(qIndex+1)%qs.length;showQuestion()}
+function stars(){let box=$('space');for(let i=0;i<65;i++){let s=document.createElement('i');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.opacity=Math.random();box.appendChild(s)}}
+stars();renderPlanets();missionBoard();achievements();stats();showQuestion();
+</script>
+</body>
+</html>
